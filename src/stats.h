@@ -12,4 +12,7 @@ public:
 	int defense = 0;
 
 	int healthRegen = 0;
+
+	Stats operator+(const Stats& other) const;
+	Stats& operator+=(const Stats& other);
 };

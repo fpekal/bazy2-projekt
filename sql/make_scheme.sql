@@ -25,4 +25,7 @@ CREATE TABLE IF NOT EXISTS "ponies_genes" (
 	FOREIGN KEY("gene_id") REFERENCES "genes"("id"),
 	FOREIGN KEY("pony_id") REFERENCES "ponies"("id")
 );
+CREATE INDEX "pony_name_index" ON "ponies" (
+	"name"	ASC
+);
 COMMIT;

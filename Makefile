@@ -1,6 +1,6 @@
 .PHONY: build clean
 
-sources = src/pony.cpp
+sources = src/pony.cpp src/app.cpp
 
 libs = sqlite3
 libs-flags != pkg-config --cflags --libs $(libs)

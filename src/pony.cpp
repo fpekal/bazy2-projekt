@@ -1,20 +1,28 @@
-#include <iostream>
-#include <fstream>
-#include <sqlite3.h>
+#include "pony.h"
 
-std::string load_scheme() {
-	std::ifstream ifs("sql/make_scheme.sql");
-	std::string sql((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+#include <array>
 
-	return sql;
-}
+Stats Pony::default_stats {};
 
-int main() {
-	sqlite3 *db;
+Stats Pony::get_effective_stats() const {
+	// Tablica wskaźników do wszystkich memberów klasy Stats.
+	// Można to tak zapisać, bo wszystkie membery są tego samego typu.
+	// Jeżeli w przyszłości jakiś typ zostanie zmieniony to lepiej to napisać
+	// jakąś zwykłą sumą memberów.
+	constexpr static std::array<int Stats::*, 6> members {
+		&Stats::maxHealth,
+		&Stats::minDamage,
+		&Stats::maxDamage,
+		&Stats::attackSpeed,
+		&Stats::defense,
+		&Stats::healthRegen
+	};
 
-	sqlite3_open_v2("file:pony.db", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_URI, nullptr);
-	
-	sqlite3_exec(db, load_scheme().c_str(), nullptr, nullptr, nullptr);
+	Stats out;
 
-	sqlite3_close_v2(db);
+	for (auto member : members) {
+		out.*member = learned_stats.*member + default_stats.*member;
+	}
+
+	return out;
 }

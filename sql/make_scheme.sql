@@ -14,17 +14,35 @@ CREATE TABLE IF NOT EXISTS "genes" (
 CREATE TABLE IF NOT EXISTS "ponies" (
 	"id"	INTEGER NOT NULL UNIQUE,
 	"name"	TEXT NOT NULL UNIQUE,
+	"max_health" 	NUMERIC NOT NULL,
+	"min_damage" 	NUMERIC NOT NULL,
+	"attack_speed" 	NUMERIC NOT NULL,
+	"armor" 		NUMERIC NOT NULL,
+	"health_regeneration" NUMERIC NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "ponies_genes" (
 	"pony_id"	INTEGER NOT NULL,
 	"gene_id"	INTEGER NOT NULL,
-	"gene_category_id"	INTEGER NOT NULL,
-	UNIQUE("gene_category_id","pony_id"),
-	FOREIGN KEY("gene_category_id") REFERENCES "gene_categories"("id"),
+	UNIQUE("gene_id","pony_id"),
 	FOREIGN KEY("gene_id") REFERENCES "genes"("id"),
 	FOREIGN KEY("pony_id") REFERENCES "ponies"("id")
 );
+CREATE TRIGGER unique_gene_category_per_pony
+BEFORE INSERT ON "ponies_genes"
+BEGIN
+    SELECT
+        RAISE(ABORT, 'This pony already has a gene from this category')
+    FROM
+        "ponies_genes" AS pg
+    JOIN
+        "genes" AS g1 ON pg.gene_id = g1.id
+    JOIN
+        "genes" AS g2 ON NEW.gene_id = g2.id
+    WHERE
+        pg.pony_id = NEW.pony_id
+        AND g1.category_id = g2.category_id;
+END;
 CREATE INDEX "pony_name_index" ON "ponies" (
 	"name"	ASC
 );

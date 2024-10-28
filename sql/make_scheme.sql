@@ -14,8 +14,10 @@ CREATE TABLE IF NOT EXISTS "genes" (
 CREATE TABLE IF NOT EXISTS "ponies" (
 	"id"	INTEGER NOT NULL UNIQUE,
 	"name"	TEXT NOT NULL UNIQUE,
+	"health"      NUMERIC NOT NULL,
 	"max_health" 	NUMERIC NOT NULL,
 	"min_damage" 	NUMERIC NOT NULL,
+	"max_damage"  NUMERIC NOT NULL,
 	"attack_speed" 	NUMERIC NOT NULL,
 	"armor" 		NUMERIC NOT NULL,
 	"health_regeneration" NUMERIC NOT NULL,

@@ -25,11 +25,12 @@
 
 
 ## Kucyk
+ - id
  - Nazwa
  - Aktualny poziom życia
  - Nauczone statystyki
- - Geny
- - Choroby
+ - Geny - jeszcze nie ma
+ - Choroby - jeszcze nie ma
 
 Prawdziwe, używane w walce statystyki wyliczane są sumując modyfikatory statystyk
 wszystkich [fenotypów](https://pl.wikipedia.org/wiki/Fenotyp) i dodając do nich

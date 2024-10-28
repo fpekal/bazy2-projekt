@@ -22,7 +22,7 @@ sqlite3* db_ptr = *db;
 ---
 
 Głównym powodem istnienia tej klasy jest to, że używa ona reference counting.
-Znaczy to tyle, że można obiekt tej klasy można skopiować w inne miejsce i nie
+Znaczy to tyle, że obiekt tej klasy można skopiować w inne miejsce i nie
 przejmować się, czy nie zostanie zniszczony.
 
 Przykład o co chodzi:

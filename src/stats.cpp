@@ -2,21 +2,21 @@
 
 Stats Stats::operator+(const Stats& other) const {
 	Stats out;
-	out.maxHealth = maxHealth + other.maxHealth;
-	out.minDamage = minDamage + other.minDamage;
-	out.maxDamage = maxDamage + other.maxDamage;
-	out.attackSpeed = attackSpeed + other.attackSpeed;
+	out.max_health = max_health + other.max_health;
+	out.min_damage = min_damage + other.min_damage;
+	out.max_damage = max_damage + other.max_damage;
+	out.attack_speed = attack_speed + other.attack_speed;
 	out.armor = armor + other.armor;
-	out.healthRegeneration = healthRegeneration + other.healthRegeneration;
+	out.health_regeneration = health_regeneration + other.health_regeneration;
 	return out;
 }
 
 Stats& Stats::operator+=(const Stats& other) {
-	maxHealth += other.maxHealth;
-	minDamage += other.minDamage;
-	maxDamage += other.maxDamage;
-	attackSpeed += other.attackSpeed;
+	max_health += other.max_health;
+	min_damage += other.min_damage;
+	max_damage += other.max_damage;
+	attack_speed += other.attack_speed;
 	armor += other.armor;
-	healthRegeneration += other.healthRegeneration;
+	health_regeneration += other.health_regeneration;
 	return *this;
 }

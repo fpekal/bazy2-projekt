@@ -9,12 +9,12 @@ static Pony load_pony_from_statement(sqlite3_stmt* stmt) {
 	out.id = sqlite3_column_int(stmt, 0);
 	out.name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
 	out.health = sqlite3_column_int(stmt, 2);
-	out.learned_stats.maxHealth = sqlite3_column_int(stmt, 3);
-	out.learned_stats.minDamage = sqlite3_column_int(stmt, 4);
-	out.learned_stats.maxDamage = sqlite3_column_int(stmt, 5);
-	out.learned_stats.attackSpeed = sqlite3_column_int(stmt, 6);
+	out.learned_stats.max_health = sqlite3_column_int(stmt, 3);
+	out.learned_stats.min_damage = sqlite3_column_int(stmt, 4);
+	out.learned_stats.max_damage = sqlite3_column_int(stmt, 5);
+	out.learned_stats.attack_speed = sqlite3_column_int(stmt, 6);
 	out.learned_stats.armor = sqlite3_column_int(stmt, 7);
-	out.learned_stats.healthRegeneration = sqlite3_column_int(stmt, 8);
+	out.learned_stats.health_regeneration = sqlite3_column_int(stmt, 8);
 	return out;
 }
 

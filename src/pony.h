@@ -5,6 +5,7 @@
 
 class Pony {
 public:
+	int id;
 	std::string name;
 	int health;
 	Stats learned_stats;

@@ -9,9 +9,9 @@ public:
 
 	int attackSpeed = 0;
 
-	int defense = 0;
+	int armor = 0;
 
-	int healthRegen = 0;
+	int healthRegeneration = 0;
 
 	Stats operator+(const Stats& other) const;
 	Stats& operator+=(const Stats& other);

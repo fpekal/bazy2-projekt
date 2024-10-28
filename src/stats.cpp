@@ -6,8 +6,8 @@ Stats Stats::operator+(const Stats& other) const {
 	out.minDamage = minDamage + other.minDamage;
 	out.maxDamage = maxDamage + other.maxDamage;
 	out.attackSpeed = attackSpeed + other.attackSpeed;
-	out.defense = defense + other.defense;
-	out.healthRegen = healthRegen + other.healthRegen;
+	out.armor = armor + other.armor;
+	out.healthRegeneration = healthRegeneration + other.healthRegeneration;
 	return out;
 }
 
@@ -16,7 +16,7 @@ Stats& Stats::operator+=(const Stats& other) {
 	minDamage += other.minDamage;
 	maxDamage += other.maxDamage;
 	attackSpeed += other.attackSpeed;
-	defense += other.defense;
-	healthRegen += other.healthRegen;
+	armor += other.armor;
+	healthRegeneration += other.healthRegeneration;
 	return *this;
 }

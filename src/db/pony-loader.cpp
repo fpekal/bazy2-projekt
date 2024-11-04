@@ -1,6 +1,8 @@
 #include "pony-loader.h"
 
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 #include <sqlite3.h>
 

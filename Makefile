@@ -1,14 +1,15 @@
 .PHONY: build clean
 
-sources = src/pony.cpp src/app.cpp src/stats.cpp src/db/db-connection.cpp src/db/pony-loader.cpp
+SRC_DIR := "src"
+SRCS := $(shell find $(SRC_DIR) -name '*.cpp')
 
-libs = sqlite3
-libs-flags != pkg-config --cflags --libs $(libs)
+LIBS := sqlite3
+LIBS_FLAGS != pkg-config --cflags --libs $(LIBS)
 
-flags = $(libs-flags) -O3
+CXXFLAGS = -Wall
 
 build:
-	g++ $(flags) -o pony $(sources)
+	$(CXX) $(LIBS_FLAGS) $(CXXFLAGS) -o pony $(SRCS)
 
 clean:
 	rm pony pony.db

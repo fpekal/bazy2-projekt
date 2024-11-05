@@ -14,7 +14,7 @@
 - Obrażenia będą losowane [min, max] inclusive.  
 - Szybkość ataku to co ile rund kucyk będzie mógł zaatakować.  
  (Czyli im mniejsze tym szybsze? TODO Do zmienienia, żeby działało odwrotnie?)  
-- Jeżeli atak będzie mniejszy od obrony, to zadaje 0 obrażeń, a gdy większy,
+- Jeżeli atak będzie mniejszy od obrony, to zadaje 0 obrażeń, a gdy większy lub równy,
  to normalnie zadaje jego obrażenia.  
  Czyli:  
  Gdy obrona = 10, atak = 8, to kucyk nie traci życia  

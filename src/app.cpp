@@ -29,11 +29,13 @@ int main() {
 		update_pony(db, p);
 	}
 
-	Pony p = load_pony(db, 1);
-	std::cout << p.name << std::endl;
+	{
+		Pony p = load_pony(db, 1);
+		std::cout << p.name << std::endl;
+	}
 
 	try {
-		p = load_pony(db, "Pony2");
+		Pony p = load_pony(db, "Pony2");
 		std::cout << p.name << std::endl;
 	}
 	catch (const std::exception& e) {

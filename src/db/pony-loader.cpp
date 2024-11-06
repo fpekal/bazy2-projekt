@@ -6,9 +6,8 @@
 
 #include <sqlite3.h>
 
-static Pony load_pony_from_statement(sqlite3_stmt* stmt) {
-	Pony out;
-	out.id = sqlite3_column_int(stmt, 0);
+Pony load_pony_from_statement(sqlite3_stmt* stmt) {
+	Pony out { sqlite3_column_int(stmt, 0) };
 	out.name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
 	out.health = sqlite3_column_int(stmt, 2);
 	out.learned_stats.max_health = sqlite3_column_int(stmt, 3);

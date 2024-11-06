@@ -23,15 +23,21 @@ static Pony load_pony_from_statement(sqlite3_stmt* stmt) {
 Pony load_pony(DbConnection db, int id) {
 	sqlite3_stmt* stmt = nullptr;
 	const char* sql = "SELECT * FROM ponies WHERE id = ?;";
-	sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
-	sqlite3_bind_int(stmt, 1, id);
+	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_bind_int(stmt, 1, id);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
 
-	int res = sqlite3_step(stmt);
+	res = sqlite3_step(stmt);
 	if (res != SQLITE_ROW)
 		throw std::runtime_error(sqlite3_errmsg(*db));
 
 	Pony ret = load_pony_from_statement(stmt);
-	sqlite3_finalize(stmt);
+	res = sqlite3_finalize(stmt);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
 
 	return ret;
 }
@@ -39,15 +45,21 @@ Pony load_pony(DbConnection db, int id) {
 Pony load_pony(DbConnection db, const std::string& name) {
 	sqlite3_stmt* stmt = nullptr;
 	const char* sql = "SELECT * FROM ponies WHERE name = ?;";
-	sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
-	sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
+	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
 
-	int res = sqlite3_step(stmt);
+	res = sqlite3_step(stmt);
 	if (res != SQLITE_ROW)
 		throw std::runtime_error(sqlite3_errmsg(*db));
 
 	Pony ret = load_pony_from_statement(stmt);
-	sqlite3_finalize(stmt);
+	res = sqlite3_finalize(stmt);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
 
 	return ret;
 }
@@ -55,13 +67,17 @@ Pony load_pony(DbConnection db, const std::string& name) {
 std::vector<Pony> load_all_ponies(DbConnection db) {
 	sqlite3_stmt* stmt = nullptr;
 	const char* sql = "SELECT * FROM ponies;";
-	sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
 
 	std::vector<Pony> out;
 	while (sqlite3_step(stmt) == SQLITE_ROW) {
 		out.push_back(load_pony_from_statement(stmt));
 	}
-	sqlite3_finalize(stmt);
+	res = sqlite3_finalize(stmt);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
 
 	return out;
 }

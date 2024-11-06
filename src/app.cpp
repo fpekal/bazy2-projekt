@@ -6,6 +6,7 @@
 
 #include "db/db-connection.h"
 #include "db/pony-loader.h"
+#include "db/pony-saver.h"
 
 std::string load_scheme() {
 	std::ifstream ifs("sql/make_scheme.sql");
@@ -18,16 +19,31 @@ int main() {
 	DbConnection db = open_db("file:pony.db");
 
 	sqlite3_exec(*db, load_scheme().c_str(), nullptr, nullptr, nullptr);
-	sqlite3_exec(*db, "INSERT INTO ponies (name, health, max_health, min_damage, max_damage, attack_speed, armor, health_regeneration) VALUES ('Pony2', 2, 1, 3, 7, 4, 2, 0);", nullptr, nullptr, nullptr);
+	
+	{
+		Pony p = create_pony(db, "Pony2");
+
+		std::cout << p.name << '\n';
+
+		p.name = "TEST";
+		update_pony(db, p);
+	}
 
 	Pony p = load_pony(db, 1);
-	std::cout << p.get_effective_stats().max_health << std::endl;
+	std::cout << p.name << std::endl;
 
-	p = load_pony(db, "Pony2");
-	std::cout << p.get_effective_stats().max_health << std::endl;
+	try {
+		p = load_pony(db, "Pony2");
+		std::cout << p.name << std::endl;
+	}
+	catch (const std::exception& e) {
+		std::cout << e.what() << std::endl;
+	}
+
+	std::cout << "\nAll ponies:\n";
 
 	auto all_ponies = load_all_ponies(db);
 	for (auto& pony : all_ponies) {
-		std::cout << pony.get_effective_stats().max_health << std::endl;
+		std::cout << pony.name << std::endl;
 	}
 }

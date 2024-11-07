@@ -1,11 +1,7 @@
-{ pkgs, ... }:
+{ pkgs }:
+let
+	libs = import ./libs.nix { inherit pkgs; };
+in
 pkgs.mkShell {
-	buildInputs = with pkgs; [
-		sqlite.dev
-		#sqlitecpp
-
-		pkg-config
-		gcc
-		gnumake
-	];
+	nativeBuildInputs = libs.nativeBuildInputs;
 }

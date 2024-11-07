@@ -11,7 +11,7 @@ CXXFLAGS = -Wall
 build:
 	$(CXX) $(LIBS_FLAGS) $(CXXFLAGS) -o pony $(SRCS)
 
-install: build
+install:
 	mkdir -p $(out)/bin
 	cp pony $(out)/bin/pony
 

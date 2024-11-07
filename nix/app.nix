@@ -9,6 +9,11 @@ let
 		buildInputs = libs.buildInputs;
 
 		src = ./..;
+
+		patchPhase =
+		''
+		substituteInPlace src/tui/ponysay.cpp --replace-fail 'ponysay -o' '${pkgs.ponysay}/bin/ponysay -o'
+		'';
 	};
 in
 {

@@ -1,5 +1,6 @@
 pony
 pony.db
+pony.db-journal
 
 # Prerequisites
 *.d

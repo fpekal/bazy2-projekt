@@ -16,4 +16,4 @@ install: build
 	cp pony $(out)/bin/pony
 
 clean:
-	rm pony pony.db
+	rm pony pony.db pony.db-journal

@@ -15,3 +15,4 @@ void restore_cursor_position2();
 void move_cursor_to_left_edge();
 void move_cursor_down(int amount = 1);
 void move_cursor_right(int amount = 1);
+void move_cursor_up(int amount = 1);

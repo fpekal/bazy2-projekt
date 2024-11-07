@@ -60,5 +60,10 @@ int main() {
 
 		draw_pony(p);
 	}
+	{
+		Pony p = load_pony(db, "Fluttershy");
+
+		draw_pony(p);
+	}
 }
 

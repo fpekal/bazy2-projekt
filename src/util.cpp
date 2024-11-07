@@ -51,3 +51,7 @@ void move_cursor_down(int amount) {
 void move_cursor_right(int amount) {
 	std::cout << add_ansi_esc(std::string{ "[" } + std::to_string(amount) + "C") << std::flush;
 }
+
+void move_cursor_up(int amount) {
+	std::cout << add_ansi_esc(std::string{ "[" } + std::to_string(amount) + "A") << std::flush;
+}

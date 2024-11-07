@@ -1,6 +1,7 @@
 #include "draw-pony.h"
 
 #include <iostream>
+#include <algorithm>
 
 #include "ponysay.h"
 #include "../util.h"
@@ -50,23 +51,20 @@ void draw_pony(const Pony& p) {
 	int pony_width = -1;
 	int pony_height = -1;
 
-	save_cursor_position();
 	{
 		std::string pony = ponysay(p.name);
 		std::cout << pony << std::endl;
-		//save_cursor_position2();
 
 		pony_width = pony.find('\n');
-		pony_height = pony.size() / pony_width;
+		pony_height = std::count(pony.begin(), pony.end(), '\n');
 	}
-	restore_cursor_position();
 
 	if (pony_width == -1) {
 		return;
 	}
 
+	move_cursor_up(pony_height);
 	draw_stats(p, pony_width);
-
-	restore_cursor_position();
-	move_cursor_down(pony_height + 2);
+	move_cursor_to_left_edge();
+	move_cursor_down(pony_height - 16);
 }

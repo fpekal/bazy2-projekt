@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS "ponies_genes" (
 	FOREIGN KEY("gene_id") REFERENCES "genes"("id"),
 	FOREIGN KEY("pony_id") REFERENCES "ponies"("id")
 );
-CREATE TRIGGER unique_gene_category_per_pony
+CREATE TRIGGER IF NOT EXISTS unique_gene_category_per_pony
 BEFORE INSERT ON "ponies_genes"
 BEGIN
     SELECT
@@ -45,7 +45,7 @@ BEGIN
         pg.pony_id = NEW.pony_id
         AND g1.category_id = g2.category_id;
 END;
-CREATE INDEX "pony_name_index" ON "ponies" (
+CREATE INDEX IF NOT EXISTS "pony_name_index" ON "ponies" (
 	"name"	ASC
 );
 COMMIT;

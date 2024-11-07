@@ -25,3 +25,11 @@ Może wyrzucić `std::runtime_error`, gdy kucyk o podanej nazwie juz istnieje.
 - `void update_pony(DbConnection db, const Pony& pony)`
 
 Aktualizuje informacje o kucyku w bazie.
+
+### Usuwanie kucyka
+- `void delete_pony(DbConnection db, int id)`
+
+Usuwa kucyka o podanym id.  
+Po usunięciu, użycie `update_pony(db, pony)` lub `delete_pony(db, id)` na
+usuniętym kucyku wyrzuci `std::runtime_error`.  
+Próba usunięcia nieistniejącego kucyka wyrzuci `std::runtime_error`.

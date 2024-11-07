@@ -39,6 +39,8 @@ static void draw_stats(const Pony& p, int pony_width) {
 	move_to_the_next_line(pony_width);
 	std::cout << "| Szybkość ataku: " << p.get_effective_stats().attack_speed;
 	move_to_the_next_line(pony_width);
+	std::cout << "| Obrona: " << p.get_effective_stats().armor;
+	move_to_the_next_line(pony_width);
 	std::cout << "| Regeneracja: " << p.get_effective_stats().health_regeneration;
 	move_to_the_next_line(pony_width);
 	std::cout << "|";

@@ -1,7 +1,5 @@
-{ pkgs }:
+{ pkgs, libs }:
 let
-	libs = import ./libs.nix { inherit pkgs; };
-
 	package =
 	pkgs.stdenv.mkDerivation {
 		name = "pony";

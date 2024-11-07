@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "customPonysay": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723670749,
+        "narHash": "sha256-X42VE/VQQEjOGIwxZGBQjivl6Kn2JTM3tUreb6gES6k=",
+        "owner": "Tonyl314",
+        "repo": "ponysay",
+        "rev": "572c50f20e2b281ff1af479de4f850ffe8ef72a7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Tonyl314",
+        "repo": "ponysay",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1729954658,
@@ -17,6 +33,7 @@
     },
     "root": {
       "inputs": {
+        "customPonysay": "customPonysay",
         "nixpkgs": "nixpkgs"
       }
     }

@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, customPonysay }:
 {
 	nativeBuildInputs =
 	with pkgs; [
@@ -11,6 +11,10 @@
 
 	buildInputs =
 	with pkgs; [
-		sqlite
+		#ponysay # BROKEN
+		# Fix for this issue: https://github.com/erkin/ponysay/issues/314
+		(ponysay.overrideAttrs {
+			src = customPonysay;
+		})
 	];
 }

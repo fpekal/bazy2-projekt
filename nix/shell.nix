@@ -1,7 +1,4 @@
-{ pkgs }:
-let
-	libs = import ./libs.nix { inherit pkgs; };
-in
+{ pkgs, libs }:
 pkgs.mkShell {
-	nativeBuildInputs = libs.nativeBuildInputs;
+	nativeBuildInputs = libs.nativeBuildInputs ++ libs.buildInputs;
 }

@@ -7,6 +7,7 @@
 #include "db/db-connection.h"
 #include "db/pony-loader.h"
 #include "db/pony-saver.h"
+#include "tui/ponysay.h"
 
 std::string load_scheme() {
 	std::ifstream ifs("sql/make_scheme.sql");
@@ -16,6 +17,8 @@ std::string load_scheme() {
 }
 
 int main() {
+	ponysay("pinkiepie");
+
 	DbConnection db = open_db("file:pony.db");
 
 	sqlite3_exec(*db, load_scheme().c_str(), nullptr, nullptr, nullptr);

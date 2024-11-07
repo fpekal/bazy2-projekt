@@ -20,8 +20,8 @@ int main() {
 	DbConnection db = open_db("file:pony.db");
 
 	sqlite3_exec(*db, load_scheme().c_str(), nullptr, nullptr, nullptr);
-	
-	{
+
+	try {
 		Pony p = create_pony(db, "Pinkie Pie");
 
 		p.health = 12;
@@ -34,11 +34,11 @@ int main() {
 		p.learned_stats.health_regeneration = 1;
 
 		update_pony(db, p);
-
-		draw_pony(p);
+	}
+	catch (const std::exception& e) {
 	}
 
-	{
+	try {
 		Pony p = create_pony(db, "Fluttershy");
 
 		p.health = 34;
@@ -51,6 +51,12 @@ int main() {
 		p.learned_stats.health_regeneration = 0;
 
 		update_pony(db, p);
+	}
+	catch (const std::exception& e) {
+	}
+
+	{
+		Pony p = load_pony(db, "Pinkie Pie");
 
 		draw_pony(p);
 	}

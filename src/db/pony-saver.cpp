@@ -81,3 +81,21 @@ Pony create_pony(DbConnection db, const std::string& name) {
 
 	return load_pony(db, name);
 }
+
+
+void delete_pony(DbConnection db, int id) {
+	sqlite3_stmt* stmt = nullptr;
+	const char* sql = "DELETE FROM ponies WHERE id = ?;";
+	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_bind_int(stmt, 1, id);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_step(stmt);
+	if (res != SQLITE_DONE)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_finalize(stmt);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+}

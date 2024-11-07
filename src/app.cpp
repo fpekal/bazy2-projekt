@@ -48,4 +48,9 @@ int main() {
 	for (auto& pony : all_ponies) {
 		std::cout << pony.name << std::endl;
 	}
+
+	delete_pony(db, all_ponies[0].id);
+
+	all_ponies = load_all_ponies(db);
+	std::cout << "Ponies after deletion: " << all_ponies.size() << std::endl;
 }

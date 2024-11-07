@@ -17,3 +17,8 @@ void update_pony(DbConnection db, const Pony& pony);
 //
 // Returns: Newly created pony
 Pony create_pony(DbConnection db, const std::string& name);
+
+
+// Delete pony from a database
+// Further usage of pony object with this ID will result in throwing a std::runtime_error.
+void delete_pony(DbConnection db, int id);

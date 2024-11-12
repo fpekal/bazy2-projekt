@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <string>
 #include <array>
+#include <fstream>
 
 std::string exec(const std::string& cmd) {
     std::array<char, 128> buffer;
@@ -18,4 +19,10 @@ std::string exec(const std::string& cmd) {
         result += buffer.data();
     }
     return result;
+}
+
+std::string load_entire_file(const std::string& path) {
+		std::ifstream t(path);
+		std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+		return str;
 }

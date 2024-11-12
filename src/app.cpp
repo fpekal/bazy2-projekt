@@ -8,20 +8,14 @@
 #include "db/pony-loader.h"
 #include "db/pony-saver.h"
 #include "tui/ponysay.h"
-
-std::string load_scheme() {
-	std::ifstream ifs("sql/make_scheme.sql");
-	std::string sql((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-
-	return sql;
-}
+#include "db/scheme.h"
 
 int main() {
 	ponysay("pinkiepie");
 
 	DbConnection db = open_db("file:pony.db");
 
-	sqlite3_exec(*db, load_scheme().c_str(), nullptr, nullptr, nullptr);
+	run_scheme(db);
 	
 	{
 		Pony p = create_pony(db, "Pony2");

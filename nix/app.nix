@@ -9,6 +9,12 @@ let
 		buildInputs = libs.buildInputs;
 
 		src = ./..;
+
+		patchPhase =
+		''
+		substituteInPlace src/db/scheme.cpp \
+		--replace-fail 'sql/make_scheme.sql' ${../sql/make_scheme.sql}
+		'';
 	};
 in
 {

@@ -16,10 +16,10 @@ make
 Jeżeli masz menedżera pakietów `nix`, to cały proces instalacji pakietów,
 kompilacji i uruchomienia można wykonać używając
 ```sh
-nix run
+nix run github:fpekal/bazy2-projekt
 ```
 
-Albo bardziej manualnie
+Albo bardziej manualnie, pobierając projekt i wchodząc do folderu z nim
 ```sh
 nix develop
 make

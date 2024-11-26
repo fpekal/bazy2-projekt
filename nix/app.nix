@@ -13,7 +13,9 @@ let
 		patchPhase =
 		''
 		substituteInPlace src/db/scheme.cpp \
-		--replace-fail 'sql/make_scheme.sql' ${../sql/make_scheme.sql}
+		  --replace-fail 'sql/make_scheme.sql' ${../sql/make_scheme.sql}
+		substituteInPlace src/tui/ponysay.cpp \
+		  --replace-fail 'ponysay -o' '${pkgs.ponysay}/bin/ponysay -o'
 		'';
 	};
 in

@@ -1,4 +1,5 @@
 #pragma once
 #include <string>
 
-void ponysay(const std::string& pony_name);
+// Get output of ponysay
+std::string ponysay(const std::string& pony_name);

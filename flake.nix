@@ -10,8 +10,12 @@
 	outputs =
 	{ nixpkgs, customPonysay, self }:
 	let
-		pkgs = nixpkgs.legacyPackages.x86_64-linux;
-		libs = import ./nix/libs.nix { inherit pkgs customPonysay; };
+		# Fix for this issue: https://github.com/erkin/ponysay/issues/314
+		overlayCustomPonysay = (final: prev: {
+			ponysay = prev.ponysay.overrideAttrs { src = customPonysay; };
+		});
+		pkgs = import nixpkgs { system = "x86_64-linux"; overlays = [overlayCustomPonysay]; };
+		libs = import ./nix/libs.nix { inherit pkgs; };
 	in
 	{
 		devShells.x86_64-linux.default = (import ./nix/shell.nix) { inherit pkgs libs;  };

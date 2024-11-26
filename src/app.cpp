@@ -7,47 +7,57 @@
 #include "db/db-connection.h"
 #include "db/pony-loader.h"
 #include "db/pony-saver.h"
-#include "tui/ponysay.h"
 #include "db/scheme.h"
+#include "tui/draw-pony.h"
 
 int main() {
-	ponysay("pinkiepie");
-
 	DbConnection db = open_db("file:pony.db");
 
 	run_scheme(db);
 	
-	{
-		Pony p = create_pony(db, "Pony2");
+	try {
+		Pony p = create_pony(db, "Pinkie Pie");
 
-		std::cout << p.name << '\n';
+		p.health = 12;
 
-		p.name = "TEST";
+		p.learned_stats.max_health = 10;
+		p.learned_stats.min_damage = 1;
+		p.learned_stats.max_damage = 1;
+		p.learned_stats.attack_speed = 1;
+		p.learned_stats.armor = 1;
+		p.learned_stats.health_regeneration = 1;
+
 		update_pony(db, p);
 	}
-
-	{
-		Pony p = load_pony(db, 1);
-		std::cout << p.name << std::endl;
+	catch (const std::exception& e) {
 	}
 
 	try {
-		Pony p = load_pony(db, "Pony2");
-		std::cout << p.name << std::endl;
+		Pony p = create_pony(db, "Fluttershy");
+
+		p.health = 34;
+
+		p.learned_stats.max_health = 40;
+		p.learned_stats.min_damage = 2;
+		p.learned_stats.max_damage = 1;
+		p.learned_stats.attack_speed = 3;
+		p.learned_stats.armor = 7;
+		p.learned_stats.health_regeneration = 0;
+
+		update_pony(db, p);
 	}
 	catch (const std::exception& e) {
-		std::cout << e.what() << std::endl;
 	}
 
-	std::cout << "\nAll ponies:\n";
+	{
+		Pony p = load_pony(db, "Pinkie Pie");
 
-	auto all_ponies = load_all_ponies(db);
-	for (auto& pony : all_ponies) {
-		std::cout << pony.name << std::endl;
+		draw_pony(p);
 	}
+	{
+		Pony p = load_pony(db, "Fluttershy");
 
-	delete_pony(db, all_ponies[0].id);
-
-	all_ponies = load_all_ponies(db);
-	std::cout << "Ponies after deletion: " << all_ponies.size() << std::endl;
+		draw_pony(p);
+	}
 }
+

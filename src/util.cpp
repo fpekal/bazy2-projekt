@@ -26,3 +26,39 @@ std::string load_entire_file(const std::string& path) {
 		std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
 		return str;
 }
+
+std::string add_ansi_esc(const std::string& str) {
+	return std::string{ "\x1b" } + str;
+}
+
+void save_cursor_position() {
+	std::cout << add_ansi_esc("7") << std::flush;
+}
+
+void restore_cursor_position() {
+	std::cout << add_ansi_esc("8") << std::flush;
+}
+
+void save_cursor_position2() {
+	std::cout << add_ansi_esc("[s") << std::flush;
+}
+
+void restore_cursor_position2() {
+	std::cout << add_ansi_esc("[u") << std::flush;
+}
+
+void move_cursor_to_left_edge() {
+	std::cout << add_ansi_esc("[0G") << std::flush;
+}
+
+void move_cursor_down(int amount) {
+	std::cout << add_ansi_esc(std::string{ "[" } + std::to_string(amount) + "B") << std::flush;
+}
+
+void move_cursor_right(int amount) {
+	std::cout << add_ansi_esc(std::string{ "[" } + std::to_string(amount) + "C") << std::flush;
+}
+
+void move_cursor_up(int amount) {
+	std::cout << add_ansi_esc(std::string{ "[" } + std::to_string(amount) + "A") << std::flush;
+}

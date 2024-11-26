@@ -4,7 +4,7 @@
 
 #include "../util.h"
 
-void ponysay(const std::string& pony_name) {
-	std::string cmd = "ponysay -o -f " + pony_name;
-	std::cout << exec(cmd);
+std::string ponysay(const std::string& pony_name) {
+	std::string cmd = "ponysay -o -F " + pony_name;
+	return exec(cmd);
 }

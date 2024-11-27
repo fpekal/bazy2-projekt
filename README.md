@@ -6,6 +6,7 @@ Potrzebne pakiety:
  - pkg-config
  - g++
  - make
+ - ponysay
 
 Aby skompilować program wystarczy użyć polecenia
 ```sh

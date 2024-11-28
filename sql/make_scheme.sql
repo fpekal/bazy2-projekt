@@ -2,12 +2,25 @@ BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS "gene_categories" (
 	"id"	INTEGER NOT NULL UNIQUE,
 	"name"	TEXT NOT NULL UNIQUE,
+	"recessive_max_health" 	 NUMERIC NOT NULL,
+	"recessive_min_damage" 	 NUMERIC NOT NULL,
+	"recessive_max_damage"   NUMERIC NOT NULL,
+	"recessive_attack_speed" NUMERIC NOT NULL,
+	"recessive_armor" 		   NUMERIC NOT NULL,
+	"recessive_health_regeneration" NUMERIC NOT NULL,
+	"dominant_max_health" 	 NUMERIC NOT NULL,
+	"dominant_min_damage" 	 NUMERIC NOT NULL,
+	"dominant_max_damage"   NUMERIC NOT NULL,
+	"dominant_attack_speed" NUMERIC NOT NULL,
+	"dominant_armor" 		   NUMERIC NOT NULL,
+	"dominant_health_regeneration" NUMERIC NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "genes" (
 	"id"	INTEGER NOT NULL UNIQUE,
 	"name"	TEXT NOT NULL UNIQUE,
 	"category_id"	INTEGER NOT NULL,
+	"type" INTEGER NOT NULL, -- a - recessive, A - dominant -> 0 - aa, 1 - aA, 2 - Aa, 3 - AA
 	PRIMARY KEY("id" AUTOINCREMENT),
 	CONSTRAINT "genes_gene_categories_fk" FOREIGN KEY("category_id") REFERENCES "gene_categories"("id")
 );

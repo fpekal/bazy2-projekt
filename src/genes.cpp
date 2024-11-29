@@ -2,6 +2,8 @@
 
 #include "stats.h"
 
+std::map<int, GeneCategory> GeneCategory::categories;
+
 Stats Gene::get_stats_modifier() const {
 	switch (type) {
 	case aA: [[fallthrough]];

@@ -4,6 +4,7 @@
 #include <sqlite3.h>
 
 #include "stats.h"
+#include "genes.h"
 
 class Pony {
 public:

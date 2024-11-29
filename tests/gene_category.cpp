@@ -18,14 +18,14 @@ BOOST_AUTO_TEST_CASE(gene_category_creation) {
 	
 	{
 		[[maybe_unused]]
-		auto gc = create_gene_category(db);
+		auto& gc = create_gene_category(db);
 		gc.recessive_stats.max_health = 100;
 	}
 
 	GeneCategory::categories = load_all_genes_categories(db);
 
 	{
-		auto gc = GeneCategory::categories.at(1);
+		auto& gc = GeneCategory::categories.at(1);
 		BOOST_CHECK(gc.recessive_stats.max_health == 0);
 
 		gc.recessive_stats.max_health = 100;
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(gene_category_creation) {
 	GeneCategory::categories = load_all_genes_categories(db);
 
 	{
-		auto gc = GeneCategory::categories.at(1);
+		auto& gc = GeneCategory::categories.at(1);
 		BOOST_CHECK(gc.recessive_stats.max_health == 100);
 	}
 
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(gene_category_deletion) {
 	GeneCategory::categories = load_all_genes_categories(db);
 	
 	{
-		auto gc = create_gene_category(db);
+		auto& gc = create_gene_category(db);
 		gc.recessive_stats.max_health = 100;
 		update_gene_category(db, gc);
 	}

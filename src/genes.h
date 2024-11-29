@@ -9,7 +9,6 @@
 class GeneCategory {
 public:
 	GeneCategory() = delete;
-	GeneCategory(const GeneCategory&) = default;
 	GeneCategory(GeneCategory&&) = default;
 
 	GeneCategory& operator=(const GeneCategory&) = delete;

@@ -145,7 +145,7 @@ void delete_gene_category(DbConnection db, int id) {
 
 
 
-void update_gene(DbConnection db, Gene& gc) {
+void update_gene(DbConnection db, const Gene& gc) {
 	sqlite3_stmt* stmt = nullptr;
 	const char* sql = "UPDATE genes SET "
 		"type = ? "
@@ -176,16 +176,12 @@ Gene create_gene(DbConnection db, const GeneCategory& gc) {
 	const char* sql = "INSERT INTO genes ("
 		"type,"
 		"category_id"
-		") VALUES (?, ?);";
+		") VALUES (0, ?);";
 	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
 	if (res != SQLITE_OK)
 		throw std::runtime_error(sqlite3_errmsg(*db));
 
 	res = sqlite3_bind_int(stmt, 1, gc.id);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
-
-	res = sqlite3_bind_int(stmt, 2, gc.id);
 	if (res != SQLITE_OK)
 		throw std::runtime_error(sqlite3_errmsg(*db));
 

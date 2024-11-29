@@ -1,4 +1,4 @@
-.PHONY: build install clean
+.PHONY: build install clean test debug
 
 SRC_DIR := "src"
 SRCS := $(shell find $(SRC_DIR) -name '*.cpp')

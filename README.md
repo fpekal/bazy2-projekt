@@ -14,6 +14,11 @@ Aby skompilować program wystarczy użyć polecenia
 make
 ```
 
+Aby przeprowadzić testy programu należy użyć polecenia
+```sh
+make test
+```
+
 
 Jeżeli masz menedżera pakietów `nix`, to cały proces instalacji pakietów,
 kompilacji i uruchomienia można wykonać używając
@@ -28,6 +33,11 @@ make
 ```
 Ale dzięki temu nie trzeba dodawać nowych plików w kodzie do repozytorium.
 (idk nix po prostu taki jest)
+
+Aby przeprowadzić testy programu używając nixa należy wykonać
+```sh
+nix develop --check
+```
 
 ## Dokumentacja
 [Dokumentacja](docs/Dokumentacja.md)

@@ -7,6 +7,7 @@ Potrzebne pakiety:
  - g++
  - make
  - ponysay
+ - boost (do testów)
 
 Aby skompilować program wystarczy użyć polecenia
 ```sh

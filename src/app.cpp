@@ -18,38 +18,27 @@ int main() {
 	run_scheme(db);
 	GeneCategory::categories = load_all_genes_categories(db);
 
-	Pony pony = create_pony(db, "Pinkie Pie");
-	pony.learned_stats.max_health = 10;
-	update_pony(db, pony);
-	
-	auto& gc = create_gene_category(db);
-	gc.recessive_stats.max_health = 100;
-	gc.dominant_stats.max_health = 200;
+	GeneCategory& gc = create_gene_category(db);
+
+	gc.recessive_stats.max_health = 20;
+	gc.dominant_stats.max_health = 0;
+
+	gc.recessive_stats.health_regeneration = 0;
+	gc.dominant_stats.health_regeneration = 5;
+
 	update_gene_category(db, gc);
 
-	auto g = create_gene(db, gc, pony);
-	g.type = Gene::Type::aa;
-	update_gene(db, g);
+	try {
+		Pony p = create_pony(db, "Twilight Sparkle");
 
-	std::cout << pony.genes.size() << std::endl;
-	
-	{
-		Pony pony = load_pony(db, "Pinkie Pie");
-		
-		auto stats = pony.get_effective_stats();
-
-		assert(stats.max_health == 110);
-	}
-
-	{
-		g.type = Gene::Type::aA;
+		Gene g = create_gene(db, gc, p);
+		g.type = Gene::Type::Aa;
 		update_gene(db, g);
-
-		Pony pony = load_pony(db, "Pinkie Pie");
-		
-		auto stats = pony.get_effective_stats();
-		
-		assert(stats.max_health == 210);
 	}
+	catch (const std::runtime_error& e) {
+	}
+
+	Pony p = load_pony(db, "Twilight Sparkle");
+	draw_pony(p);
 }
 

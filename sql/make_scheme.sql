@@ -1,7 +1,6 @@
 BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS "gene_categories" (
 	"id"	INTEGER NOT NULL UNIQUE,
-	"name"	TEXT NOT NULL UNIQUE,
 	"recessive_max_health" 	 NUMERIC NOT NULL,
 	"recessive_min_damage" 	 NUMERIC NOT NULL,
 	"recessive_max_damage"   NUMERIC NOT NULL,
@@ -18,9 +17,9 @@ CREATE TABLE IF NOT EXISTS "gene_categories" (
 );
 CREATE TABLE IF NOT EXISTS "genes" (
 	"id"	INTEGER NOT NULL UNIQUE,
-	"name"	TEXT NOT NULL UNIQUE,
 	"category_id"	INTEGER NOT NULL,
-	"type" INTEGER NOT NULL, -- a - recessive, A - dominant -> 0 - aa, 1 - aA, 2 - Aa, 3 - AA
+	-- a - recessive, A - dominant -> 0 - aa, 1 - aA, 2 - Aa, 3 - AA
+	"type" INTEGER NOT NULL CHECK ("type" IN (0, 1, 2, 3)),
 	PRIMARY KEY("id" AUTOINCREMENT),
 	CONSTRAINT "genes_gene_categories_fk" FOREIGN KEY("category_id") REFERENCES "gene_categories"("id")
 );

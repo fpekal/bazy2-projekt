@@ -11,7 +11,6 @@ public:
 	GeneCategory& operator=(GeneCategory&&) = delete;
 
 	const int id;
-	std::string name;
 
 	Stats recessive_stats;
 	Stats dominant_stats;
@@ -27,7 +26,6 @@ public:
 	Gene& operator=(Gene&&) = delete;
 
 	const int id;
-	std::string name;
 	const GeneCategory& category;
 
 	enum Type {

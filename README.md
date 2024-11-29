@@ -7,10 +7,16 @@ Potrzebne pakiety:
  - g++
  - make
  - ponysay
+ - boost (do testów)
 
 Aby skompilować program wystarczy użyć polecenia
 ```sh
 make
+```
+
+Aby przeprowadzić testy programu należy użyć polecenia
+```sh
+make test
 ```
 
 
@@ -27,6 +33,11 @@ make
 ```
 Ale dzięki temu nie trzeba dodawać nowych plików w kodzie do repozytorium.
 (idk nix po prostu taki jest)
+
+Aby przeprowadzić testy programu używając nixa należy wykonać
+```sh
+nix develop --check
+```
 
 ## Dokumentacja
 [Dokumentacja](docs/Dokumentacja.md)

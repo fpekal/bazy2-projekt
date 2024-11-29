@@ -11,5 +11,6 @@
 	with pkgs; [
 		ponysay
 		sqlite.dev
+		boost.dev
 	];
 }

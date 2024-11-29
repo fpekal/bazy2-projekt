@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 #include <sqlite3.h>
 
@@ -20,6 +21,8 @@ public:
 	std::string name;
 	int health;
 	Stats learned_stats;
+
+	std::vector<Gene> genes;
 
 	static Stats default_stats;
 

@@ -6,6 +6,8 @@
 
 #include <sqlite3.h>
 
+#include "genes-loader.h"
+
 Pony load_pony_from_statement(sqlite3_stmt* stmt) {
 	Pony out { sqlite3_column_int(stmt, 0) };
 	out.name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
@@ -16,6 +18,7 @@ Pony load_pony_from_statement(sqlite3_stmt* stmt) {
 	out.learned_stats.attack_speed = sqlite3_column_int(stmt, 6);
 	out.learned_stats.armor = sqlite3_column_int(stmt, 7);
 	out.learned_stats.health_regeneration = sqlite3_column_int(stmt, 8);
+
 	return out;
 }
 
@@ -38,6 +41,8 @@ Pony load_pony(DbConnection db, int id) {
 	if (res != SQLITE_OK)
 		throw std::runtime_error(sqlite3_errmsg(*db));
 
+	ret.genes = load_genes_for_pony(db, ret);
+
 	return ret;
 }
 
@@ -59,6 +64,8 @@ Pony load_pony(DbConnection db, const std::string& name) {
 	res = sqlite3_finalize(stmt);
 	if (res != SQLITE_OK)
 		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	ret.genes = load_genes_for_pony(db, ret);
 
 	return ret;
 }

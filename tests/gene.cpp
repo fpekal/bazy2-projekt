@@ -5,6 +5,7 @@
 #include "genes.h"
 #include "db/genes-saver.h"
 #include "db/genes-loader.h"
+#include "db/pony-saver.h"
 #include "db/scheme.h"
 
 BOOST_AUTO_TEST_SUITE(gene)
@@ -15,6 +16,8 @@ BOOST_AUTO_TEST_CASE(gene_creation) {
 	DbConnection db = open_db("file:pony_test.db");
 	run_scheme(db);
 	GeneCategory::categories = load_all_genes_categories(db);
+
+	Pony pony = create_pony(db, "Pinkie Pie");
 	
 	{
 		auto& gc = create_gene_category(db);
@@ -25,7 +28,7 @@ BOOST_AUTO_TEST_CASE(gene_creation) {
 	}
 
 	{
-		auto g = create_gene(db, GeneCategory::categories.at(1));
+		auto g = create_gene(db, GeneCategory::categories.at(1), pony);
 		g.type = Gene::Type::aa;
 
 		update_gene(db, g);
@@ -59,9 +62,11 @@ BOOST_AUTO_TEST_CASE(gene_deletion) {
 	DbConnection db = open_db("file:pony_test.db");
 	run_scheme(db);
 	GeneCategory::categories = load_all_genes_categories(db);
+
+	Pony pony = create_pony(db, "Pinkie Pie");
 	
 	create_gene_category(db);
-	create_gene(db, GeneCategory::categories.at(1));
+	create_gene(db, GeneCategory::categories.at(1), pony);
 
 	load_gene(db, 1);
 

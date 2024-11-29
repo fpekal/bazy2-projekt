@@ -2,6 +2,7 @@
 
 #include <map>
 #include <stdexcept>
+#include <vector>
 
 #include <sqlite3.h>
 
@@ -74,4 +75,26 @@ Gene load_gene(DbConnection db, int id) {
 		throw std::runtime_error(sqlite3_errmsg(*db));
 
 	return ret;
+}
+
+std::vector<Gene> load_genes_for_pony(DbConnection db, const Pony& pony) {
+	sqlite3_stmt* stmt = nullptr;
+	const char* sql = "SELECT gene_id FROM ponies_genes WHERE pony_id = ?;";
+	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_bind_int(stmt, 1, pony.id);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	std::vector<Gene> out;
+	while (sqlite3_step(stmt) == SQLITE_ROW) {
+		out.push_back(load_gene(db, sqlite3_column_int(stmt, 0)));
+	}
+
+	res = sqlite3_finalize(stmt);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	return out;
 }

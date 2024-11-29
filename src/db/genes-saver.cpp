@@ -171,48 +171,102 @@ void update_gene(DbConnection db, const Gene& gc) {
 		throw std::runtime_error(sqlite3_errmsg(*db));
 }
 
-Gene create_gene(DbConnection db, const GeneCategory& gc) {
-	sqlite3_stmt* stmt = nullptr;
-	const char* sql = "INSERT INTO genes ("
-		"type,"
-		"category_id"
-		") VALUES (0, ?);";
-	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+Gene create_gene(DbConnection db, const GeneCategory& gc, Pony& pony) {
+	int res = 0;
 
-	res = sqlite3_bind_int(stmt, 1, gc.id);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	{
+		sqlite3_stmt* stmt = nullptr;
+		const char* sql = "INSERT INTO genes ("
+			"type,"
+			"category_id"
+			") VALUES (0, ?);";
+		res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+		if (res != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
 
-	res = sqlite3_step(stmt);
-	if (res != SQLITE_DONE)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+		res = sqlite3_bind_int(stmt, 1, gc.id);
+		if (res != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
 
-	res = sqlite3_finalize(stmt);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+		res = sqlite3_step(stmt);
+		if (res != SQLITE_DONE)
+			throw std::runtime_error(sqlite3_errmsg(*db));
 
-	res = sqlite3_last_insert_rowid(*db);
-	if (res == 0)
-		throw std::runtime_error("Failed to create gene");
+		res = sqlite3_finalize(stmt);
+		if (res != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
 
-	return load_gene(db, res);
+		res = sqlite3_last_insert_rowid(*db);
+		if (res == 0)
+			throw std::runtime_error("Failed to create gene");
+	}
+
+	{
+		sqlite3_stmt* stmt = nullptr;
+		const char* sql = "INSERT INTO ponies_genes ("
+			"pony_id,"
+			"gene_id"
+			") VALUES (?, ?);";
+		int res2 = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+		if (res2 != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+
+		res2 = sqlite3_bind_int(stmt, 1, pony.id);
+		if (res2 != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+
+		res2 = sqlite3_bind_int(stmt, 2, res);
+		if (res2 != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+
+		res2 = sqlite3_step(stmt);
+		if (res2 != SQLITE_DONE)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+
+		res2 = sqlite3_finalize(stmt);
+		if (res2 != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+	}
+
+	auto gene = load_gene(db, res);
+
+	pony.genes.push_back(gene);
+
+	return gene;
 }
 
 void delete_gene(DbConnection db, int id) {
-	sqlite3_stmt* stmt = nullptr;
-	const char* sql = "DELETE FROM genes WHERE id = ?;";
-	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
-	res = sqlite3_bind_int(stmt, 1, id);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
-	res = sqlite3_step(stmt);
-	if (res != SQLITE_DONE)
-		throw std::runtime_error(sqlite3_errmsg(*db));
-	res = sqlite3_finalize(stmt);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	{
+		sqlite3_stmt* stmt = nullptr;
+		const char* sql = "DELETE FROM genes WHERE id = ?;";
+		int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+		if (res != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+		res = sqlite3_bind_int(stmt, 1, id);
+		if (res != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+		res = sqlite3_step(stmt);
+		if (res != SQLITE_DONE)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+		res = sqlite3_finalize(stmt);
+		if (res != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+	}
+
+	{
+		sqlite3_stmt* stmt = nullptr;
+		const char* sql = "DELETE FROM ponies_genes WHERE gene_id = ?;";
+		int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+		if (res != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+		res = sqlite3_bind_int(stmt, 1, id);
+		if (res != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+		res = sqlite3_step(stmt);
+		if (res != SQLITE_DONE)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+		res = sqlite3_finalize(stmt);
+		if (res != SQLITE_OK)
+			throw std::runtime_error(sqlite3_errmsg(*db));
+	}
 }

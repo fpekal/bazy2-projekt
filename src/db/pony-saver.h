@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 #include "db-connection.h"
 #include "../pony.h"
 

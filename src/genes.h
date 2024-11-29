@@ -1,4 +1,8 @@
 #pragma once
+#include <map>
+
+#include <sqlite3.h>
+
 #include "stats.h"
 
 class GeneCategory {
@@ -14,6 +18,13 @@ public:
 
 	Stats recessive_stats;
 	Stats dominant_stats;
+
+	static std::map<int, GeneCategory> categories;
+
+private:
+	GeneCategory(int id) : id{ id } {}
+
+	friend GeneCategory load_gene_category_from_statement(sqlite3_stmt* stmt);
 };
 
 class Gene {
@@ -31,4 +42,10 @@ public:
 	enum Type {
 		aa,aA,Aa,AA
 	} type;
+
+
+	Stats get_stats_modifier() const;
+
+private:
+	Gene(int id, const GeneCategory& category) : id{ id }, category{ category } {}
 };

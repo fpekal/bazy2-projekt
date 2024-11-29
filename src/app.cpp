@@ -18,25 +18,11 @@ int main() {
 	run_scheme(db);
 	GeneCategory::categories = load_all_genes_categories(db);
 	
-	auto gc = create_gene_category(db);
-	gc.recessive_stats.max_health = 100;
-	gc.recessive_stats.min_damage = 100;
-	gc.recessive_stats.max_damage = 100;
-	gc.recessive_stats.attack_speed = 100;
-	gc.recessive_stats.armor = 100;
-	gc.recessive_stats.health_regeneration = 100;
-	gc.dominant_stats.max_health = 100;
-	gc.dominant_stats.min_damage = 100;
-	gc.dominant_stats.max_damage = 100;
-	gc.dominant_stats.attack_speed = 100;
-	gc.dominant_stats.armor = 100;
-	gc.dominant_stats.health_regeneration = 100;
+	auto g = create_gene(db, GeneCategory::categories.at(2));
 
-	update_gene_category(db, gc);
-
-	delete_gene_category(db, 1);
-
-	std::cout << GeneCategory::categories.at(1).dominant_stats.max_health;
+	std::cout << g.id << '\n';
+	g.type = Gene::Type::aa;
+	std::cout << g.get_stats_modifier().max_health << '\n';
 	
 	return 0;
 }

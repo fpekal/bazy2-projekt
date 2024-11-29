@@ -50,4 +50,6 @@ public:
 
 private:
 	Gene(int id, const GeneCategory& category) : id{ id }, category{ category } {}
+
+	friend Gene load_gene_from_statement(sqlite3_stmt* stmt);
 };

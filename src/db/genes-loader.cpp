@@ -45,3 +45,33 @@ std::map<int, GeneCategory> load_all_genes_categories(DbConnection db) {
 
 	return out;
 }
+
+Gene load_gene_from_statement(sqlite3_stmt* stmt) {
+	GeneCategory& gc = GeneCategory::categories.at(sqlite3_column_int(stmt, 1));
+
+	Gene out { sqlite3_column_int(stmt, 0), gc};
+	out.type = static_cast<Gene::Type>(sqlite3_column_int(stmt, 2));
+	return out;
+}
+
+Gene load_gene(DbConnection db, int id) {
+	sqlite3_stmt* stmt = nullptr;
+	const char* sql = "SELECT * FROM genes WHERE id = ?;";
+	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_bind_int(stmt, 1, id);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_step(stmt);
+	if (res != SQLITE_ROW)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	Gene ret = load_gene_from_statement(stmt);
+	res = sqlite3_finalize(stmt);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	return ret;
+}

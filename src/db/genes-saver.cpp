@@ -142,3 +142,81 @@ void delete_gene_category(DbConnection db, int id) {
 
 	GeneCategory::categories.erase(id);
 }
+
+
+
+void update_gene(DbConnection db, Gene& gc) {
+	sqlite3_stmt* stmt = nullptr;
+	const char* sql = "UPDATE genes SET "
+		"type = ? "
+		"WHERE id = ?;";
+	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_bind_int(stmt, 1, gc.type);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_bind_int(stmt, 2, gc.id);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_step(stmt);
+	if (res != SQLITE_DONE)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_finalize(stmt);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+}
+
+Gene create_gene(DbConnection db, const GeneCategory& gc) {
+	sqlite3_stmt* stmt = nullptr;
+	const char* sql = "INSERT INTO genes ("
+		"type,"
+		"category_id"
+		") VALUES (?, ?);";
+	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_bind_int(stmt, 1, gc.id);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_bind_int(stmt, 2, gc.id);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_step(stmt);
+	if (res != SQLITE_DONE)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_finalize(stmt);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+
+	res = sqlite3_last_insert_rowid(*db);
+	if (res == 0)
+		throw std::runtime_error("Failed to create gene");
+
+	return load_gene(db, res);
+}
+
+void delete_gene(DbConnection db, int id) {
+	sqlite3_stmt* stmt = nullptr;
+	const char* sql = "DELETE FROM genes WHERE id = ?;";
+	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_bind_int(stmt, 1, id);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_step(stmt);
+	if (res != SQLITE_DONE)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+	res = sqlite3_finalize(stmt);
+	if (res != SQLITE_OK)
+		throw std::runtime_error(sqlite3_errmsg(*db));
+}

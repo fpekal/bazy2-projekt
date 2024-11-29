@@ -23,5 +23,8 @@ test:
 	$(CXX) $(LIBS_FLAGS) -lboost_unit_test_framework $(CXXFLAGS) -Isrc/ -o pony_test $(TEST_SRCS)
 	./pony_test
 
+debug:
+	$(CXX) $(LIBS_FLAGS) $(CXXFLAGS) -ggdb -o pony $(SRCS)
+
 clean:
 	rm pony pony.db pony.db-journal

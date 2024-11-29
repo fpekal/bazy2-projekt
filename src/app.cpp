@@ -18,11 +18,16 @@ int main() {
 	run_scheme(db);
 	GeneCategory::categories = load_all_genes_categories(db);
 	
-	auto g = create_gene(db, GeneCategory::categories.at(2));
+	auto& gc = create_gene_category(db);
+	gc.recessive_stats.max_health = 10;
+	gc.dominant_stats.max_health = 50;
+	update_gene_category(db, gc);
 
-	std::cout << g.id << '\n';
-	g.type = Gene::Type::aa;
-	std::cout << g.get_stats_modifier().max_health << '\n';
+	auto g = create_gene(db, gc);
+	g.type = Gene::Type::aA;
+	update_gene(db, g);
+
+	std::cout << g.get_stats_modifier().max_health << std::endl;
 	
 	return 0;
 }

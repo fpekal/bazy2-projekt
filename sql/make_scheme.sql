@@ -60,4 +60,13 @@ END;
 CREATE INDEX IF NOT EXISTS "pony_name_index" ON "ponies" (
 	"name"	ASC
 );
+CREATE INDEX IF NOT EXISTS "category_id_index" ON "genes" (
+	"category_id"	ASC
+);
+CREATE INDEX IF NOT EXISTS "pony_id_index" ON "ponies_genes" (
+	"pony_id"	ASC
+);
+CREATE INDEX IF NOT EXISTS "gene_id_index" ON "ponies_genes" (
+	"gene_id"	ASC
+);
 COMMIT;

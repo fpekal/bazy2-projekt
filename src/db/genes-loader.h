@@ -9,4 +9,6 @@
 std::map<int, GeneCategory> load_all_genes_categories(DbConnection db);
 
 Gene load_gene(DbConnection db, int id);
-std::vector<Gene> load_genes_for_pony(DbConnection db, const Pony& pony);
+
+// Get genes that are assigned to the pony
+std::vector<Gene> load_genes_of_pony(DbConnection db, const Pony& pony);

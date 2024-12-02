@@ -41,7 +41,7 @@ Pony load_pony(DbConnection db, int id) {
 	if (res != SQLITE_OK)
 		throw std::runtime_error(sqlite3_errmsg(*db));
 
-	ret.genes = load_genes_for_pony(db, ret);
+	ret.genes = load_genes_of_pony(db, ret);
 
 	return ret;
 }
@@ -65,7 +65,7 @@ Pony load_pony(DbConnection db, const std::string& name) {
 	if (res != SQLITE_OK)
 		throw std::runtime_error(sqlite3_errmsg(*db));
 
-	ret.genes = load_genes_for_pony(db, ret);
+	ret.genes = load_genes_of_pony(db, ret);
 
 	return ret;
 }

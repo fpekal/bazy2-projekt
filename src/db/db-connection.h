@@ -4,6 +4,7 @@
 
 #include <sqlite3.h>
 
+// Explained in depth in documentation
 class DbConnection_impl
 {
 public:

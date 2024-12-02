@@ -77,7 +77,7 @@ Gene load_gene(DbConnection db, int id) {
 	return ret;
 }
 
-std::vector<Gene> load_genes_for_pony(DbConnection db, const Pony& pony) {
+std::vector<Gene> load_genes_of_pony(DbConnection db, const Pony& pony) {
 	sqlite3_stmt* stmt = nullptr;
 	const char* sql = "SELECT gene_id FROM ponies_genes WHERE pony_id = ?;";
 	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);

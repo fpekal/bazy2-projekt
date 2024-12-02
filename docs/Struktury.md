@@ -1,7 +1,7 @@
 # Struktury używane w programie
 *niekoniecznie w samej bazie danych*
 
-## Statystyki
+## Statystyki (Stats)
  - Maksymalne życie
  - Minimalne obrażenia
  - Maksymalne obrażenia
@@ -24,12 +24,12 @@
  jest taka śmieszna)
 
 
-## Kucyk
+## Kucyk (Pony)
  - id
  - Nazwa
  - Aktualny poziom życia
  - Nauczone statystyki
- - Geny - jeszcze nie ma
+ - Geny
  - Choroby - jeszcze nie ma
 
 Prawdziwe, używane w walce statystyki wyliczane są sumując modyfikatory statystyk
@@ -44,3 +44,30 @@ bez zmian.
 
 Genetyczne modyfikatory statystyk mogą obniżyć daną statystykę poniżej typowego,
 początkowego poziomu, a nauczone mogą tylko zwiększyć dany poziom.
+
+
+## Kategoria genów (GeneCategory)
+ - id
+ - Statystyki recesywne
+ - Statystyki dominujące
+
+Klasa opisująca efekty posiadania fenotypu recesywnego i dominującego. Ważne jest to, że tutaj są TYLKO efekty.
+Statystyki opisane są klasą `Stats`. Są one po prostu sumowane ze statystykami kucyka.
+
+
+## Geny (Gene)
+ - id
+ - Kategoria genu
+ - Typ
+
+Klasa przechowywana w kucyku w liście.
+Kucyk powinien mieć tylko jeden gen z danej kategorii.  
+Typ może mieć 4 wartości:  
+ - aa
+ - aA
+ - Aa
+ - AA
+
+Mała litera 'a' oznacza recesywność, duża litera 'A' oznacza dominację.
+Kiedy gen ma w swoim typie chociaż jedną wielką literę, oznacza to, że na kucyka działają efekty **dominujące** opisane w kategorii genu.
+

@@ -4,7 +4,7 @@
 Potrzebne pakiety:
  - sqlite
  - pkg-config
- - g++
+ - g++ w wersji 14
  - make
  - ponysay
  - boost (do testów)

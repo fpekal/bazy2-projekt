@@ -8,6 +8,8 @@
 #include "../breeding.h"
 #include "../genes.h"
 #include "../db/genes-saver.h"
+#include "../fight.h"
+#include "../predictor.h"
 
 static Gene::Type get_gene_type_from_string(const std::string& s) {
 	if (s == "AA") {

@@ -161,6 +161,7 @@ public:
 
 					Fight fight(pony1_p, pony2_p);
 
+					int i = 0;
 					while (fight.left_pony.health > 0 && fight.right_pony.health > 0) {
 						fight.make_turn();
 						if (fight.left_pony.health <= 0 || fight.right_pony.health <= 0) {
@@ -187,12 +188,41 @@ public:
 							if (input == "c") {
 								while (fight.left_pony.health > 0 && fight.right_pony.health > 0) {
 									fight.make_turn();
+									if (i == 10000) {
+										if (fight.left_pony.get_effective_stats().attack_speed > fight.right_pony.get_effective_stats().attack_speed) {
+											fight.left_pony.health = 0;
+										}
+										else {
+											fight.right_pony.health = 0;
+										}
+									}
+									++i;
 								}
 							}
 						}
+						++i;
 					}
 
-					std::cout << "Zwycięża " << (fight.left_pony.health > 0 ? pony1_p.name : pony2_p.name) << std::endl;
+					{
+						Pony& winning_pony = fight.left_pony.health > 0 ? fight.left_pony : fight.right_pony;
+						Pony& losing_pony = fight.left_pony.health > 0 ? fight.right_pony : fight.left_pony;
+						winning_pony.learned_stats.max_damage++;
+						winning_pony.learned_stats.attack_speed = winning_pony.learned_stats.attack_speed * 1.1 + 2;
+
+						losing_pony.learned_stats.min_damage++;
+						if (losing_pony.learned_stats.min_damage > losing_pony.learned_stats.max_damage) {
+							losing_pony.learned_stats.max_damage = losing_pony.learned_stats.min_damage;
+						}
+						losing_pony.learned_stats.max_health = losing_pony.learned_stats.max_health * 1.2;
+						losing_pony.learned_stats.armor++;
+						losing_pony.learned_stats.health_regeneration++;
+						losing_pony.learned_stats.attack_speed = losing_pony.learned_stats.attack_speed * 0.9;
+
+						update_pony(db, winning_pony);
+						update_pony(db, losing_pony);
+
+						std::cout << "Zwycięża " << winning_pony.name << std::endl;
+					}
 				}
 				catch (std::exception& e) {
 					std::cout << "Podano błędne dane" << std::endl;

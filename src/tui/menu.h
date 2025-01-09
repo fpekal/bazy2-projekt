@@ -29,6 +29,7 @@ public:
 		FIGHT,
 		SEARCH,
 		SEARCH_STATS,
+		PREDICTOR,
 		ADMIN
 	} state;
 
@@ -43,6 +44,7 @@ public:
 			std::cout << "1. Rozmnazanie" << std::endl;
 			std::cout << "2. Walka" << std::endl;
 			std::cout << "3. Wyszukiwanie" << std::endl;
+			std::cout << "4. Wymarzony kucyk" << std::endl;
 			break;
 		case MenuState::BREEDING:
 			std::cout << "Rozmnazanie" << std::endl;
@@ -72,6 +74,12 @@ public:
 			std::cout << "6. Obrona\n";
 			std::cout << "7. Powrot do menu glownego\n";
 			break;
+		case MenuState::PREDICTOR:
+			std::cout << "Wymarzony kucyk\n";
+			std::cout << "Podaj po kolei statystyki wymarzonego kucyka:\n";
+			std::cout << "Maksymalne zdrowie, Minimalne obrażenia, Maksymalne obrażenia,\n";
+			std::cout << "Szybkość ataku, Obrona, Regeneracja zdrowia\n";
+			break;
 		case MenuState::ADMIN:
 			std::cout << "Admin" << std::endl;
 			std::cout << "1. Utworz nowego kucyka\n";
@@ -97,6 +105,8 @@ public:
 				} else if (input == "3") {
 					state = MenuState::SEARCH;
 				} else if (input == "4") {
+					state = MenuState::PREDICTOR;
+				} else if (input == "5") {
 					state = MenuState::ADMIN;
 				} else if (input == "2137") {
 					std::cout <<
@@ -385,6 +395,27 @@ public:
 						break;
 					}
 				}
+			}
+			break;
+		case MenuState::PREDICTOR:
+			{
+				std::string max_health, min_damage, max_damage, attack_speed, armor, health_regeneration;
+				std::cin >> max_health >> min_damage >> max_damage >> attack_speed >> armor >> health_regeneration;
+
+				auto ponies = load_all_ponies(db);
+				Stats stats;
+				stats.max_health = std::stoi(max_health);
+				stats.min_damage = std::stoi(min_damage);
+				stats.max_damage = std::stoi(max_damage);
+				stats.attack_speed = std::stoi(attack_speed);
+				stats.armor = std::stoi(armor);
+				stats.health_regeneration = std::stoi(health_regeneration);
+
+				auto [best1, best2] = predict(ponies, stats);
+				draw_pony(best1);
+				draw_pony(best2);
+				std::cin.get();
+				state = MenuState::MAIN;
 			}
 			break;
 		case MenuState::ADMIN:

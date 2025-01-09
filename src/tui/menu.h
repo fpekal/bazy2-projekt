@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <ranges>
 
 #include "../db/pony-loader.h"
 #include "../db/pony-saver.h"
@@ -27,6 +28,7 @@ public:
 		BREEDING,
 		FIGHT,
 		SEARCH,
+		SEARCH_STATS,
 		ADMIN
 	} state;
 
@@ -56,9 +58,19 @@ public:
 			std::cout << "1. Wypisz wszystkie kucyki\n";
 			std::cout << "2. Wyszukaj kucyka po imieniu\n";
 			std::cout << "3. Wyszkkaj kucyka po id\n";
-			std::cout << "4. Wyszukaj kucyka statystykach (WIP)\n";
+			std::cout << "4. Wyszukaj kucyka po statystykach\n";
 			std::cout << "5. Wyszukaj losowego kucyka\n";
 			std::cout << "6. Powrot do menu glownego\n";
+			break;
+		case MenuState::SEARCH_STATS:
+			std::cout << "Wyszukaj kucyka po statystykach\n";
+			std::cout << "1. Życie\n";
+			std::cout << "2. Maksymalne zdrowie\n";
+			std::cout << "3. Minimalne obrażenia\n";
+			std::cout << "4. Maksymalne obrażenia\n";
+			std::cout << "5. Szybkość ataku\n";
+			std::cout << "6. Obrona\n";
+			std::cout << "7. Powrot do menu glownego\n";
 			break;
 		case MenuState::ADMIN:
 			std::cout << "Admin" << std::endl;
@@ -216,6 +228,7 @@ public:
 					break;
 				}
 				if (input == "4") {
+					state = MenuState::SEARCH_STATS;
 					break;
 				}
 				if (input == "5") {
@@ -228,6 +241,119 @@ public:
 				if (input == "6") {
 					state = MenuState::MAIN;
 					break;
+				}
+			}
+			break;
+		case MenuState::SEARCH_STATS:
+			{
+				auto ponies = load_all_ponies(db);
+				while(true) {
+					std::cout << "Szukaj kucyka po statystykach\n";
+					std::cout << "1. Życie\n";
+					std::cout << "2. Maksymalne zdrowie\n";
+					std::cout << "3. Minimalne obrażenia\n";
+					std::cout << "4. Maksymalne obrażenia\n";
+					std::cout << "5. Szybkość ataku\n";
+					std::cout << "6. Obrona\n";
+					std::cout << "7. Regeneracja zdrowia\n";
+					std::cout << "8. Wyświetl odfiltrowane kucyki\n";
+					std::cout << "9. Zresetuj filtr\n";
+					std::cout << "10. Powrot\n";
+
+					std::string input;
+					std::getline(std::cin, input);
+
+					auto filter_factory = [](int min, int max, int Stats::* stat) {
+						return [min, max, stat](const Pony& pony) {
+							return pony.get_effective_stats().*stat >= min && pony.get_effective_stats().*stat <= max;
+						};
+					};
+
+					if (input == "1") {
+						std::cout << "[min, max]: ";
+						std::string min, max;
+						std::cin >> min >> max;
+						ponies = std::ranges::to<decltype(ponies)>(
+								ponies | std::views::filter(
+									[min = std::stoi(min), max = std::stoi(max)](const Pony& pony) {
+										return pony.health >= min && pony.health <= max;
+									}
+								)
+						);
+					}
+					else if (input == "2") {
+						std::cout << "[min, max]: ";
+						std::string min, max;
+						std::cin >> min >> max;
+						ponies = std::ranges::to<decltype(ponies)>(
+								ponies | std::views::filter(
+									filter_factory(std::stoi(min), std::stoi(max), &Stats::max_health)
+								)
+						);
+					}
+					else if (input == "3") {
+						std::cout << "[min, max]: ";
+						std::string min, max;
+						std::cin >> min >> max;
+						ponies = std::ranges::to<decltype(ponies)>(
+								ponies | std::views::filter(
+									filter_factory(std::stoi(min), std::stoi(max), &Stats::min_damage)
+								)
+						);
+					}
+					else if (input == "4") {
+						std::cout << "[min, max]: ";
+						std::string min, max;
+						std::cin >> min >> max;
+						ponies = std::ranges::to<decltype(ponies)>(
+								ponies | std::views::filter(
+									filter_factory(std::stoi(min), std::stoi(max), &Stats::max_damage)
+								)
+						);
+					}
+					else if (input == "5") {
+						std::cout << "[min, max]: ";
+						std::string min, max;
+						std::cin >> min >> max;
+						ponies = std::ranges::to<decltype(ponies)>(
+								ponies | std::views::filter(
+									filter_factory(std::stoi(min), std::stoi(max), &Stats::attack_speed)
+								)
+						);
+					}
+					else if (input == "6") {
+						std::cout << "[min, max]: ";
+						std::string min, max;
+						std::cin >> min >> max;
+						ponies = std::ranges::to<decltype(ponies)>(
+								ponies | std::views::filter(
+									filter_factory(std::stoi(min), std::stoi(max), &Stats::armor)
+								)
+						);
+					}
+					else if (input == "7") {
+						std::cout << "[min, max]: ";
+						std::string min, max;
+						std::cin >> min >> max;
+						ponies = std::ranges::to<decltype(ponies)>(
+								ponies | std::views::filter(
+									filter_factory(std::stoi(min), std::stoi(max), &Stats::health_regeneration)
+								)
+						);
+					}
+					else if (input == "8") {
+						for (const auto& pony : ponies) {
+							draw_pony(pony);
+							std::cin.get();
+						}
+					}
+					else if (input == "9") {
+						ponies = load_all_ponies(db);
+					}
+					else if (input == "10") {
+						state = MenuState::SEARCH;
+						break;
+					}
 				}
 			}
 			break;

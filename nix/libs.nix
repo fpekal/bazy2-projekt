@@ -3,7 +3,7 @@
 	nativeBuildInputs =
 	with pkgs; [
 		pkg-config
-		gcc
+		gcc14
 		gnumake
 	];
 

@@ -10,7 +10,7 @@ TEST_SRCS_SRC != find src/ -name '*.cpp' ! -name app.cpp
 TEST_SRCS_TESTS != find tests/ -name '*.cpp'
 TEST_SRCS := $(TEST_SRCS_SRC) $(TEST_SRCS_TESTS)
 
-CXXFLAGS = -Wall
+CXXFLAGS = -Wall -std=c++23
 
 build:
 	$(CXX) $(LIBS_FLAGS) $(CXXFLAGS) -o pony $(SRCS)

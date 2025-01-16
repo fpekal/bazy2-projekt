@@ -55,7 +55,25 @@ void draw_pony(const Pony& p) {
 		std::string pony = ponysay(p.name);
 		std::cout << pony << std::endl;
 
-		pony_width = pony.find('\n');
+		pony_width = 0;
+
+		int tmp_width = 0;
+		for (auto iter = pony.begin(); iter != pony.end(); ++iter) {
+			if (*iter == ' ' ||
+					*iter == '█' ||
+					*iter == '▄' ||
+					*iter == '▀' ) {
+				++tmp_width;
+			}
+			else if (*iter == '\n') {
+				if (tmp_width > pony_width) {
+					pony_width = tmp_width;
+				}
+				tmp_width = 0;
+			}
+		}
+		pony_width += 2;
+
 		pony_height = std::count(pony.begin(), pony.end(), '\n');
 	}
 

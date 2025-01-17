@@ -4,4 +4,4 @@
 #include "db-connection.h"
 
 // Run scheme to initialize database
-void run_scheme(DbConnection db);
+void run_scheme(DbConnection& db);

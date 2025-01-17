@@ -17,7 +17,7 @@
 int main() {
 	srand(time(nullptr));
 
-	DbConnection db = open_db("file:pony.db");
+	DbConnection& db = DbConnection::get_instance("file:pony.db");
 	run_scheme(db);
 	GeneCategory::categories = load_all_genes_categories(db);
 

@@ -29,7 +29,7 @@ class GeneCategory {
 	GeneCategory(int id) : id{id} {}
 
 	friend GeneCategory load_gene_category_from_statement(sqlite3_stmt* stmt);
-	friend GeneCategory& create_gene_category(DbConnection db);
+	friend GeneCategory& create_gene_category(DbConnection& db);
 };
 
 class Gene {

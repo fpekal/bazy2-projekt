@@ -2,26 +2,32 @@
 #include <sqlite3.h>
 
 #include <memory>
+#include <mutex>
 #include <string>
 
 // Explained in depth in documentation
-class DbConnection_impl {
+class DbConnection {
    public:
-	DbConnection_impl(const char* URI);
-	~DbConnection_impl();
+	static DbConnection& get_instance(const char* uri);
+	// for testing
+	static void reset_db();
+	~DbConnection();
 
-	DbConnection_impl(const DbConnection_impl&) = delete;
-	DbConnection_impl& operator=(const DbConnection_impl&) = delete;
-	DbConnection_impl(DbConnection_impl&&) = delete;
-	DbConnection_impl& operator=(DbConnection_impl&&) = delete;
+	DbConnection(DbConnection& other) = delete;
+	DbConnection(const DbConnection&) = delete;
+	DbConnection& operator=(const DbConnection&) = delete;
+	DbConnection(DbConnection&&) = delete;
+	DbConnection& operator=(DbConnection&&) = delete;
 
 	sqlite3* get() const;
 	operator sqlite3*() const { return get(); }
 
    private:
 	sqlite3* db;
+	std::string uri;
+	static std::mutex mutex;
+	static std::unique_ptr<DbConnection> instance;
+
+protected:
+	DbConnection() { }
 };
-
-typedef std::shared_ptr<DbConnection_impl> DbConnection;
-
-DbConnection open_db(const std::string& URI);

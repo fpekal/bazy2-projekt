@@ -14,8 +14,8 @@
 
 BOOST_AUTO_TEST_CASE(pony_with_genes) {
 	std::ignore = system("rm pony_test.db 2> /dev/null");
-	
-	DbConnection db = open_db("file:pony_test.db");
+
+	DbConnection& db = DbConnection::get_instance("file:pony_test.db");
 	run_scheme(db);
 	GeneCategory::categories = load_all_genes_categories(db);
 
@@ -34,9 +34,7 @@ BOOST_AUTO_TEST_CASE(pony_with_genes) {
 
 	{
 		Pony pony = load_pony(db, "Pinkie Pie");
-		
 		auto stats = pony.get_effective_stats();
-
 		BOOST_CHECK(stats.max_health == 110);
 	}
 
@@ -45,11 +43,10 @@ BOOST_AUTO_TEST_CASE(pony_with_genes) {
 		update_gene(db, g);
 
 		Pony pony = load_pony(db, 1);
-		
 		auto stats = pony.get_effective_stats();
-		
 		BOOST_CHECK(stats.max_health == 210);
 	}
-	
+
+	DbConnection::reset_db();
 	std::ignore = system("rm pony_test.db 2> /dev/null");
 }

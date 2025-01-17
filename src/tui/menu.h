@@ -84,7 +84,7 @@ class Menu {
 		}
 	}
 
-	void change_state(DbConnection db) {
+	void change_state(DbConnection& db) {
 		switch (state) {
 			case MenuState::MAIN: {
 				std::string input;

@@ -1,36 +1,38 @@
 #include "breeding.h"
 
-#include "db/pony-saver.h"
-#include "db/pony-loader.h"
 #include "db/genes-saver.h"
+#include "db/pony-loader.h"
+#include "db/pony-saver.h"
 
 static Gene::Type random_type(const Gene::Type& parent1, const Gene::Type& parent2) {
 	bool p1_dominant = false;
 	switch (parent1) {
-	case Gene::Type::aA: [[fallthrough]];
-	case Gene::Type::Aa:
-		p1_dominant = rand() % 2;
-		break;
-	case Gene::Type::AA:
-		p1_dominant = true;
-		break;
-	case Gene::Type::aa:
-		p1_dominant = false;
-		break;
+		case Gene::Type::aA:
+			[[fallthrough]];
+		case Gene::Type::Aa:
+			p1_dominant = rand() % 2;
+			break;
+		case Gene::Type::AA:
+			p1_dominant = true;
+			break;
+		case Gene::Type::aa:
+			p1_dominant = false;
+			break;
 	}
 
 	bool p2_dominant = false;
 	switch (parent2) {
-	case Gene::Type::aA: [[fallthrough]];
-	case Gene::Type::Aa:
-		p2_dominant = rand() % 2;
-		break;
-	case Gene::Type::AA:
-		p2_dominant = true;
-		break;
-	case Gene::Type::aa:
-		p2_dominant = false;
-		break;
+		case Gene::Type::aA:
+			[[fallthrough]];
+		case Gene::Type::Aa:
+			p2_dominant = rand() % 2;
+			break;
+		case Gene::Type::AA:
+			p2_dominant = true;
+			break;
+		case Gene::Type::aa:
+			p2_dominant = false;
+			break;
 	}
 
 	if (p1_dominant && p2_dominant)

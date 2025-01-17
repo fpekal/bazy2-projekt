@@ -2,9 +2,9 @@
 #include <map>
 #include <vector>
 
-#include "db-connection.h"
 #include "../genes.h"
 #include "../pony.h"
+#include "db-connection.h"
 
 std::map<int, GeneCategory> load_all_genes_categories(DbConnection db);
 

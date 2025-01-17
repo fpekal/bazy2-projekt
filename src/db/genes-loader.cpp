@@ -1,15 +1,15 @@
 #include "genes-loader.h"
 
+#include <sqlite3.h>
+
 #include <map>
 #include <stdexcept>
 #include <vector>
 
-#include <sqlite3.h>
-
 #include "../genes.h"
 
 GeneCategory load_gene_category_from_statement(sqlite3_stmt* stmt) {
-	GeneCategory out { sqlite3_column_int(stmt, 0) };
+	GeneCategory out{sqlite3_column_int(stmt, 0)};
 	out.recessive_stats.max_health = sqlite3_column_int(stmt, 1);
 	out.recessive_stats.min_damage = sqlite3_column_int(stmt, 2);
 	out.recessive_stats.max_damage = sqlite3_column_int(stmt, 3);
@@ -30,8 +30,7 @@ std::map<int, GeneCategory> load_all_genes_categories(DbConnection db) {
 	const char* sql = "SELECT * FROM gene_categories;";
 
 	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	if (res != SQLITE_OK) throw std::runtime_error(sqlite3_errmsg(*db));
 
 	std::map<int, GeneCategory> out;
 
@@ -41,8 +40,7 @@ std::map<int, GeneCategory> load_all_genes_categories(DbConnection db) {
 	}
 
 	res = sqlite3_finalize(stmt);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	if (res != SQLITE_OK) throw std::runtime_error(sqlite3_errmsg(*db));
 
 	return out;
 }
@@ -50,7 +48,7 @@ std::map<int, GeneCategory> load_all_genes_categories(DbConnection db) {
 Gene load_gene_from_statement(sqlite3_stmt* stmt) {
 	GeneCategory& gc = GeneCategory::categories.at(sqlite3_column_int(stmt, 1));
 
-	Gene out { sqlite3_column_int(stmt, 0), gc};
+	Gene out{sqlite3_column_int(stmt, 0), gc};
 	out.type = static_cast<Gene::Type>(sqlite3_column_int(stmt, 2));
 	return out;
 }
@@ -59,20 +57,16 @@ Gene load_gene(DbConnection db, int id) {
 	sqlite3_stmt* stmt = nullptr;
 	const char* sql = "SELECT * FROM genes WHERE id = ?;";
 	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	if (res != SQLITE_OK) throw std::runtime_error(sqlite3_errmsg(*db));
 	res = sqlite3_bind_int(stmt, 1, id);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	if (res != SQLITE_OK) throw std::runtime_error(sqlite3_errmsg(*db));
 
 	res = sqlite3_step(stmt);
-	if (res != SQLITE_ROW)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	if (res != SQLITE_ROW) throw std::runtime_error(sqlite3_errmsg(*db));
 
 	Gene ret = load_gene_from_statement(stmt);
 	res = sqlite3_finalize(stmt);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	if (res != SQLITE_OK) throw std::runtime_error(sqlite3_errmsg(*db));
 
 	return ret;
 }
@@ -81,11 +75,9 @@ std::vector<Gene> load_genes_of_pony(DbConnection db, const Pony& pony) {
 	sqlite3_stmt* stmt = nullptr;
 	const char* sql = "SELECT gene_id FROM ponies_genes WHERE pony_id = ?;";
 	int res = sqlite3_prepare_v2(*db, sql, -1, &stmt, nullptr);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	if (res != SQLITE_OK) throw std::runtime_error(sqlite3_errmsg(*db));
 	res = sqlite3_bind_int(stmt, 1, pony.id);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	if (res != SQLITE_OK) throw std::runtime_error(sqlite3_errmsg(*db));
 
 	std::vector<Gene> out;
 	while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -93,8 +85,7 @@ std::vector<Gene> load_genes_of_pony(DbConnection db, const Pony& pony) {
 	}
 
 	res = sqlite3_finalize(stmt);
-	if (res != SQLITE_OK)
-		throw std::runtime_error(sqlite3_errmsg(*db));
+	if (res != SQLITE_OK) throw std::runtime_error(sqlite3_errmsg(*db));
 
 	return out;
 }

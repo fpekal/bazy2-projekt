@@ -1,13 +1,12 @@
 #pragma once
+#include <sqlite3.h>
+
 #include <memory>
 #include <string>
 
-#include <sqlite3.h>
-
 // Explained in depth in documentation
-class DbConnection_impl
-{
-public:
+class DbConnection_impl {
+   public:
 	DbConnection_impl(const char* URI);
 	~DbConnection_impl();
 
@@ -19,7 +18,7 @@ public:
 	sqlite3* get() const;
 	operator sqlite3*() const { return get(); }
 
-private:
+   private:
 	sqlite3* db;
 };
 

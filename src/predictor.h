@@ -4,7 +4,7 @@
 #include "pony.h"
 #include "stats.h"
 
-template<typename Cont>
+template <typename Cont>
 std::pair<Pony, Pony> predict(const Cont& ponies, const Stats& stats) {
 	int best_index1 = 0;
 	int best_index2 = 0;

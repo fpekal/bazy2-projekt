@@ -1,7 +1,7 @@
 #pragma once
-#include "db-connection.h"
 #include "../genes.h"
 #include "../pony.h"
+#include "db-connection.h"
 
 void update_gene_category(DbConnection db, const GeneCategory& gc);
 GeneCategory& create_gene_category(DbConnection db);

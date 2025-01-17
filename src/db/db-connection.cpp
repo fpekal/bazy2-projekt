@@ -1,17 +1,26 @@
 #include "db-connection.h"
+#include <memory>
 
-DbConnection_impl::DbConnection_impl(const char* URI) {
-	sqlite3_open_v2(URI, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_URI, nullptr);
+std::unique_ptr<DbConnection> DbConnection::instance;
+std::mutex DbConnection::mutex;
+
+DbConnection& DbConnection::get_instance(const char* uri) {
+	std::lock_guard<std::mutex> lock(mutex);
+	if (instance == nullptr) {
+		instance->instance = std::unique_ptr<DbConnection>(new DbConnection());
+		sqlite3_open_v2(uri, &instance->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_URI,
+						nullptr);
+		instance->uri = std::string(uri);
+	}
+	
+	return *instance;
 }
 
-DbConnection_impl::~DbConnection_impl() {
-	sqlite3_close_v2(db);
+void DbConnection::reset_db() {
+	instance = nullptr;
 }
 
-sqlite3* DbConnection_impl::get() const {
-	return db;
-}
+DbConnection::~DbConnection() { sqlite3_close_v2(db); }
 
-DbConnection open_db(const std::string& URI) {
-	return std::make_shared<DbConnection_impl>(URI.c_str());
-}
+sqlite3* DbConnection::get() const { return db; }
+

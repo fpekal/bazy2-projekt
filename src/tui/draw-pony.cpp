@@ -1,10 +1,10 @@
 #include "draw-pony.h"
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
-#include "ponysay.h"
 #include "../util.h"
+#include "ponysay.h"
 
 static void move_to_the_next_line(int pony_width) {
 	move_cursor_to_left_edge();
@@ -59,13 +59,9 @@ void draw_pony(const Pony& p) {
 
 		int tmp_width = 0;
 		for (auto iter = pony.begin(); iter != pony.end(); ++iter) {
-			if (*iter == ' ' ||
-					*iter == '█' ||
-					*iter == '▄' ||
-					*iter == '▀' ) {
+			if (*iter == ' ' || *iter == '█' || *iter == '▄' || *iter == '▀') {
 				++tmp_width;
-			}
-			else if (*iter == '\n') {
+			} else if (*iter == '\n') {
 				if (tmp_width > pony_width) {
 					pony_width = tmp_width;
 				}

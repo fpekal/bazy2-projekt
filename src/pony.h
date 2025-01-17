@@ -1,14 +1,14 @@
 #pragma once
+#include <sqlite3.h>
+
 #include <string>
 #include <vector>
 
-#include <sqlite3.h>
-
-#include "stats.h"
 #include "genes.h"
+#include "stats.h"
 
 class Pony {
-public:
+   public:
 	// Getting pony object is only allowed from load_pony() or from create_pony().
 	Pony() = delete;
 	Pony(const Pony&) = default;
@@ -33,9 +33,9 @@ public:
 	// Where "Mutations" are arbitrary functions
 	Stats get_effective_stats() const;
 
-private:
+   private:
 	// Private because there should not be any pony that aren't in the database
-	Pony(int id) : id{ id } {};
+	Pony(int id) : id{id} {};
 
 	friend Pony load_pony_from_statement(sqlite3_stmt* stmt);
 };

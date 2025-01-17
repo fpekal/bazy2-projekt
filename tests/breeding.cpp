@@ -14,8 +14,8 @@
 
 BOOST_AUTO_TEST_CASE(test_breeding) {
 	std::ignore = system("rm pony_test.db 2> /dev/null");
-	
-	DbConnection db = open_db("file:pony_test.db");
+
+	DbConnection& db = DbConnection::get_instance("file:pony_test.db");
 
 	run_scheme(db);
     GeneCategory::categories = load_all_genes_categories(db);
@@ -93,5 +93,6 @@ BOOST_AUTO_TEST_CASE(test_breeding) {
 			BOOST_CHECK(results[Gene::Type::aa] > 0);
 		}
 
+	DbConnection::reset_db();
 	std::ignore = system("rm pony_test.db 2> /dev/null");
 }

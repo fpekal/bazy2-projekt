@@ -11,8 +11,8 @@ BOOST_AUTO_TEST_SUITE(gene_category)
 
 BOOST_AUTO_TEST_CASE(gene_category_creation) {
 	std::ignore = system("rm pony_test.db 2> /dev/null");
-	
-	DbConnection db = open_db("file:pony_test.db");
+
+	DbConnection& db = DbConnection::get_instance("file:pony_test.db");
 	run_scheme(db);
 	GeneCategory::categories = load_all_genes_categories(db);
 	
@@ -40,13 +40,15 @@ BOOST_AUTO_TEST_CASE(gene_category_creation) {
 		BOOST_CHECK(gc.recessive_stats.max_health == 100);
 	}
 
+	DbConnection::reset_db();
 	std::ignore = system("rm pony_test.db 2> /dev/null");
 }
 
 BOOST_AUTO_TEST_CASE(gene_category_deletion) {
 	std::ignore = system("rm pony_test.db 2> /dev/null");
+
+	DbConnection& db = DbConnection::get_instance("file:pony_test.db");
 	
-	DbConnection db = open_db("file:pony_test.db");
 	run_scheme(db);
 	GeneCategory::categories = load_all_genes_categories(db);
 	
@@ -65,7 +67,8 @@ BOOST_AUTO_TEST_CASE(gene_category_deletion) {
 	GeneCategory::categories = load_all_genes_categories(db);
 
 	BOOST_CHECK_THROW(GeneCategory::categories.at(1), std::out_of_range);
-	
+
+	DbConnection::reset_db();
 	std::ignore = system("rm pony_test.db 2> /dev/null");
 }
 

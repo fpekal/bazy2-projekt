@@ -13,9 +13,10 @@ BOOST_AUTO_TEST_SUITE(pony)
 
 BOOST_AUTO_TEST_CASE(pony_creation) {
 	std::ignore = system("rm pony_test.db 2> /dev/null");
+	DbConnection::reset_db();
 	
 	{
-		DbConnection db = open_db("file:pony_test.db");
+		DbConnection& db = DbConnection::get_instance("file:pony_test.db");
 		run_scheme(db);
 
 		Pony p = create_pony(db, "Pinkie Pie");
@@ -33,7 +34,7 @@ BOOST_AUTO_TEST_CASE(pony_creation) {
 	}
 
 	{
-		DbConnection db = open_db("file:pony_test.db");
+		DbConnection& db = DbConnection::get_instance("file:pony_test.db");
 		Pony p = load_pony(db, "Pinkie Pie");
 		BOOST_CHECK(p.health == 12);
 
@@ -48,7 +49,7 @@ BOOST_AUTO_TEST_CASE(pony_creation) {
 	}
 
 	{
-		DbConnection db = open_db("file:pony_test.db");
+		DbConnection& db = DbConnection::get_instance("file:pony_test.db");
 		Pony p = load_pony(db, 1);
 		BOOST_CHECK(p.health == 12);
 
@@ -63,12 +64,14 @@ BOOST_AUTO_TEST_CASE(pony_creation) {
 	}
 
 	std::ignore = system("rm pony_test.db 2> /dev/null");
+	DbConnection::reset_db();
 }
 
 BOOST_AUTO_TEST_CASE(pony_deletion) {
 	std::ignore = system("rm pony_test.db 2> /dev/null");
-	
-	DbConnection db = open_db("file:pony_test.db");
+	DbConnection::reset_db();
+
+	DbConnection& db = DbConnection::get_instance("file:pony_test.db");
 	run_scheme(db);
 
 	create_pony(db, "Pinkie Pie");
@@ -79,6 +82,7 @@ BOOST_AUTO_TEST_CASE(pony_deletion) {
 	BOOST_CHECK_THROW(load_pony(db, "Pinkie Pie"), std::runtime_error);
 
 	std::ignore = system("rm pony_test.db 2> /dev/null");
+	DbConnection::reset_db();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

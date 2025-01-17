@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <ranges>
+#include <algorithm>
 #include <string>
 
 #include "../breeding.h"
@@ -10,6 +11,7 @@
 #include "../fight.h"
 #include "../genes.h"
 #include "../predictor.h"
+#include "../ponyness.h"
 
 static Gene::Type get_gene_type_from_string(const std::string& s) {
 	if (s == "AA") {
@@ -49,9 +51,9 @@ class Menu {
 				break;
 			case MenuState::SEARCH:
 				std::cout << "Wyszukiwanie\n";
-				std::cout << "1. Wypisz wszystkie kucyki\n";
+				std::cout << "1. Wypisz wszystkie kucyki wedlug kucykowosci\n";
 				std::cout << "2. Wyszukaj kucyka po imieniu\n";
-				std::cout << "3. Wyszkkaj kucyka po id\n";
+				std::cout << "3. Wyszukaj kucyka po id\n";
 				std::cout << "4. Wyszukaj kucyka po statystykach\n";
 				std::cout << "5. Wyszukaj losowego kucyka\n";
 				std::cout << "6. Powrot do menu glownego\n";
@@ -235,7 +237,12 @@ class Menu {
 
 				if (input == "1") {
 					auto ponies = load_all_ponies(db);
-					for (const auto& pony : ponies) {
+					std::vector<int> ponies_indices;
+					ponies_indices.resize(ponies.size());
+					std::ranges::iota(ponies_indices, 0);
+					std::ranges::sort(ponies_indices, std::greater<int>{}, [&ponies](int i) { return calculate_ponyness(ponies[i]); });
+					auto sorted_ponies = std::ranges::to<std::vector<Pony>>(ponies_indices | std::views::transform([&ponies](int i) { return ponies[i]; }));
+					for (const auto& pony : sorted_ponies) {
 						draw_pony(pony);
 						std::cin.get();
 					}
